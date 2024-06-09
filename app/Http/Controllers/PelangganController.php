@@ -24,9 +24,11 @@ class PelangganController extends Controller
                 'phone' => $c->phone,
                 'dusun' => $c->dusun,
                 'rt_rw' => $c->rw . '/' . $c->rt,
+                'jenis_tarif' => $c->waterTarif->tariff_name,
             ];
         }
         return DataTables::of($customers)->make(true);
+        // return DataTables::of($customer)->make(true);
     }
 
     public function store(Request $request) 
@@ -40,6 +42,7 @@ class PelangganController extends Controller
             'dusun' => 'required',
             'rt' => 'required',
             'rw' => 'required',
+            'water_tarif_id' => 'required',
         ]);
 
         $customer = new Customer();
@@ -50,6 +53,7 @@ class PelangganController extends Controller
         $customer->dusun = $request->dusun;
         $customer->rt = $request->rt;
         $customer->rw = $request->rw;
+        $customer->water_tarif_id = $request->water_tarif_id;
         $customer->save();
 
         //create new user
@@ -84,6 +88,7 @@ class PelangganController extends Controller
             'dusun' => 'required',
             'rt' => 'required',
             'rw' => 'required',
+            'water_tarif_id' => 'required',
         ]);
 
         $customer = Customer::where('meter_id', $meter_id)->first();
@@ -93,6 +98,7 @@ class PelangganController extends Controller
         $customer->dusun = $request->dusun;
         $customer->rt = $request->rt;
         $customer->rw = $request->rw;
+        $customer->water_tarif_id = $request->water_tarif_id;
         $customer->save();
 
         //create new user

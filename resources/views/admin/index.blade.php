@@ -31,7 +31,7 @@
                         <!-- Yearly Breakup -->
                         <div class="card overflow-hidden">
                             <div class="card-body p-4">
-                                <h5 class="card-title mb-9 fw-semibold">Yearly Breakup</h5>
+                                <h5 class="card-title mb-9 fw-semibold">Jumlah Pengguna Dashboard</h5>
                                 <div class="row align-items-center">
                                     <div class="col-8">
                                         <h4 class="fw-semibold mb-3">$36,358</h4>
@@ -70,7 +70,7 @@
                             <div class="card-body">
                                 <div class="row alig n-items-start">
                                     <div class="col-8">
-                                        <h5 class="card-title mb-9 fw-semibold"> Monthly Earnings </h5>
+                                        <h5 class="card-title mb-9 fw-semibold"> Pendapatan Bulan Ini </h5>
                                         <h4 class="fw-semibold mb-3">$6,820</h4>
                                         <div class="d-flex align-items-center pb-1">
                                             <span
@@ -102,7 +102,7 @@
                 <div class="card w-100">
                     <div class="card-body p-4">
                         <div class="mb-4">
-                            <h5 class="card-title fw-semibold">Recent Transactions</h5>
+                            <h5 class="card-title fw-semibold">Transaksi Terakhir</h5>
                         </div>
                         <ul class="timeline-widget mb-0 position-relative mb-n5">
                             <li class="timeline-item d-flex position-relative overflow-hidden">
@@ -167,7 +167,7 @@
             <div class="col-lg-8 d-flex align-items-stretch">
                 <div class="card w-100">
                     <div class="card-body p-4">
-                        <h5 class="card-title fw-semibold mb-4">Recent Transactions</h5>
+                        <h5 class="card-title fw-semibold mb-4">Pelanggan pemakai air terbanyak</h5>
                         <div class="table-responsive">
                             <table class="table text-nowrap mb-0 align-middle">
                                 <thead class="text-dark fs-4">
@@ -279,3 +279,9 @@
         </div>
     </div>
 @endsection
+@push('scripts')
+    <script src="../assets/libs/jquery/dist/jquery.min.js"></script>
+    <script src="../assets/js/dashboard.js"></script>
+    <script src="../assets/libs/apexcharts/dist/apexcharts.min.js"></script>
+    <script src="../assets/libs/simplebar/dist/simplebar.js"></script>
+@endpush

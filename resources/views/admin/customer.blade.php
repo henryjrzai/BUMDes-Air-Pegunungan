@@ -21,6 +21,7 @@
                             <th>No Telp</th>
                             <th>Dusun</th>
                             <th>RT/RW</th>
+                            <th>Jenis Tarif Penggunaan</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -88,6 +89,12 @@
                                 <option value="RW 4">RW 4</option>
                             </select>
                         </div>
+                        <div class="mb-3">
+                            <label for="jenis_tarif" class="form-label">Jenis Tarif Penggunaan</label>
+                            <select class="form-control" id="jenis_tarif" aria-label="Default select example" name="tariff">
+                                <option selected hidden>~ Pilih Tarif ~</option>
+                            </select>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
@@ -135,6 +142,9 @@
                         data: 'rt_rw'
                     },
                     {
+                        data: 'jenis_tarif'
+                    },
+                    {
                         "render": function(data, type, row) {
                             return `
 						<button id="updateToggle" data-meter=${row.meter_id} type="modal" data-bs-toggle="modal" data-bs-target="#addCustomerModal" class="btn btn-primary btn-sm"><i class="fa-solid fa-pen-to-square"></i></button>
@@ -143,6 +153,27 @@
                         }
                     }
                 ],
+            });
+
+            // Get tarif data to select option
+            $.ajax({
+                url: '{{ route('getTariffNameId') }}',
+                type: 'GET',
+                success: function(response) {
+                    response.forEach(tarif => {
+                        $('#jenis_tarif').append(
+                            `<option value="${tarif.id}">${tarif.tariff_name}</option>`);
+                    });
+                },
+                error: function(response) {
+                    Swal.fire({
+                        type: 'error',
+                        icon: 'error',
+                        title: `${response.responseJSON.message}`,
+                        showConfirmButton: false,
+                        timer: 3000
+                    });
+                }
             });
         });
 
@@ -161,6 +192,7 @@
             let dusun = $('#dusun').val();
             let rt = $('#rt').val();
             let rw = $('#rw').val();
+            let water_tarif_id = $('#jenis_tarif').val();
 
             $.ajax({
                 url: '{{ route('createCustomer') }}',
@@ -174,7 +206,8 @@
                     phone: phone,
                     dusun: dusun,
                     rt: rt,
-                    rw: rw
+                    rw: rw,
+                    water_tarif_id : water_tarif_id
                 },
                 success: function(response) {
                     Swal.fire({
@@ -186,7 +219,6 @@
                     });
                     $('#addCustomerModal').modal('hide');
                     $('#table-customers').DataTable().ajax.reload();
-                    console.log(url);
                     cleanInput();
                 },
                 error: function(response) {
@@ -211,7 +243,6 @@
                 type: 'GET',
                 cache: false,
                 success: function(response) {
-                    console.log(response);
                     $('#meterId').val(response.meter_id);
                     $('#name').val(response.name);
                     $('#address').val(response.address);
@@ -219,6 +250,7 @@
                     $('#dusun').val(response.dusun);
                     $('#rt').val(response.rt);
                     $('#rw').val(response.rw);
+                    $('#jenis_tarif').val(response.water_tarif_id);
                 },
                 error: function(response) {
                     Swal.fire({
@@ -240,6 +272,7 @@
             let dusun = $('#dusun').val();
             let rt = $('#rt').val();
             let rw = $('#rw').val();
+            let water_tarif_id = $('#jenis_tarif').val();
 
             $.ajax({
                 url: `/admin/updateCustomer/${meterId}`,
@@ -254,7 +287,8 @@
                     phone: phone,
                     dusun: dusun,
                     rt: rt,
-                    rw: rw
+                    rw: rw,
+                    water_tarif_id : water_tarif_id
                 },
                 success: function(response) {
                     Swal.fire({
@@ -276,13 +310,12 @@
                         showConfirmButton: false,
                         timer: 3000
                     });
-                    console.log(response);
                 }
             });
         });
 
         // Delete customer by meter id
-        $(document).on('click', '#delete', function(){
+        $(document).on('click', '#delete', function() {
             let meterId = $(this).data('meter');
             Swal.fire({
                 title: 'Apakah Anda Yakin?',
@@ -332,9 +365,10 @@
             $('#name').val('');
             $('#address').val('');
             $('#phone').val('');
-            $('#dusun').val('');
-            $('#rt').val('');
-            $('#rw').val('');
+            $('#dusun').val('~ Pilih Dusun ~');
+            $('#rt').val('~ Pilih RT ~');
+            $('#rw').val('~ Pilih RW ~');
+            $('#jenis_tarif').val('~ Pilih Tarif ~');
         }
     </script>
 @endpush
