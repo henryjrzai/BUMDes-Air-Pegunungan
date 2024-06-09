@@ -24,6 +24,7 @@ class CustomerFactory extends Factory
             'dusun' => fake()->randomElement(['Dusun 1', 'Dusun 2', 'Dusun 3', 'Dusun 4']),
             'rt' => fake()->randomElement(['RT 1', 'RT 2', 'RT 3', 'RT 4']),
             'rw' => fake()->randomElement(['RW 1', 'RW 2', 'RW 3', 'RW 4']),
+            'water_tarif_id' => fake()->numberBetween(1, 51),
         ];
     }
 }

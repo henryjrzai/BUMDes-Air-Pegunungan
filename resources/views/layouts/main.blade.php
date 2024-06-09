@@ -7,11 +7,18 @@
     <title> @yield('title') </title>
     <link rel="shortcut icon" type="image/png" href="../assets/images/logos/favicon.png" />
     <link rel="stylesheet" href="../assets/css/styles.min.css" />
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 
     {{-- DataTables --}}
     <link rel="stylesheet" href="https://cdn.datatables.net/2.0.8/css/dataTables.dataTables.css" />
 
+    {{-- SweetAler --}}
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    {{-- Select2 --}}
+   <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    
 </head>
 
 <body>
@@ -50,7 +57,8 @@
                                                 <p class="mb-0 fs-3">Profile Saya</p>
                                             </a>
                                             @csrf
-                                            <button type="submit" class="btn btn-outline-primary mt-2 w-100">Logout</button>
+                                            <button type="submit"
+                                                class="btn btn-outline-primary mt-2 w-100">Logout</button>
                                         </div>
                                     </form>
                                 </div>
@@ -63,17 +71,21 @@
             @yield('content')
         </div>
     </div>
-    <script src="../assets/libs/jquery/dist/jquery.min.js"></script>
+    
     <script src="../assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../assets/js/sidebarmenu.js"></script>
     <script src="../assets/js/app.min.js"></script>
-    <script src="../assets/libs/apexcharts/dist/apexcharts.min.js"></script>
-    <script src="../assets/libs/simplebar/dist/simplebar.js"></script>
-    <script src="../assets/js/dashboard.js"></script>
+    
     <script src="https://kit.fontawesome.com/c3621d3bda.js" crossorigin="anonymous"></script>
 
     {{-- DataTables --}}
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+    {{-- DataTables --}}
     <script src="https://cdn.datatables.net/2.0.8/js/dataTables.js"></script>
+
+    {{-- Select2 --}}
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     @stack('scripts')
 </body>
 

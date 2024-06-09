@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\AdministratorSistem;
 use App\Http\Controllers\PelangganController;
+use App\Http\Controllers\WaterTariffController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,8 +33,16 @@ Route::prefix('admin')->middleware(['auth', AdministratorSistem::class])->group(
 
     Route::get('/customers', [PelangganController::class, 'index'])->name('customers');
     Route::get('/getAllCustomers', [PelangganController::class, 'getCustomers'])->name('getAllCustomers');
-    Route::post('/addcustomer', [PelangganController::class, 'store'])->name('createCustomer');
     Route::put('/updateCustomer/{meter_id}', [PelangganController::class, 'update'])->name('updateCustomer');
+    Route::post('/addcustomer', [PelangganController::class, 'store'])->name('createCustomer');
     Route::get('/getCustomer/{meter_id}', [PelangganController::class, 'show'])->name('getCustomer');
     Route::delete('/customer/{meter_id}', [PelangganController::class, 'destroy'])->name('deleteCustomer');
+
+    Route::get('/tariff', [WaterTariffController::class, 'index'])->name('tariff');
+    Route::get('/getAllTariff', [WaterTariffController::class, 'getTariff'])->name('getAllTariff');
+    Route::get('/getTariffNameId', [WaterTariffController::class, 'getTariffNameId'])->name('getTariffNameId');
+    Route::post('/createTariff', [WaterTariffController::class, 'store'])->name('createTariff');
+    Route::get('/getTariff/{id}', [WaterTariffController::class, 'show'])->name('getTariff');
+    Route::get('/updateTariff/{id}', [WaterTariffController::class, 'update'])->name('updateTariff');
+    Route::delete('/tarif/{id}', [WaterTariffController::class, 'destroy'])->name('deleteTariff');
 });
