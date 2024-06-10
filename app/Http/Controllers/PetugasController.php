@@ -115,4 +115,21 @@ class PetugasController extends Controller
             return response()->json(['message' => 'Data gagal disimpan'], 500);
         }
     }
+
+    public function getCustomers()
+    {
+        $customer = Customer::all();
+        foreach ($customer as $c) {
+            $customers[] = [
+                'meter_id' => $c->meter_id,
+                'name' => $c->name,
+                'address' => $c->address,
+                'phone' => $c->phone,
+                'dusun' => $c->dusun,
+                'rt_rw' => $c->rw . '/' . $c->rt,
+                'jenis_tarif' => $c->waterTarif->tariff_name,
+            ];
+        }
+        return view('petugas.customers', compact('customers'));
+    }
 }

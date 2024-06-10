@@ -69,4 +69,5 @@ Route::prefix('petugas')->middleware(['auth', PetugasPencatatan::class])->group(
     Route::get('/record-water', [PetugasController::class, 'recordWater'])->name('record-water-usages');
     Route::post('/record-water', [PetugasController::class, 'store'])->name('record-water');
     Route::get('/getCustomerByMeterId/{meter_id}', [PetugasController::class, 'getCustomerByMeterId'])->name('getCustomerByMeterId');
+    Route::get('/getCustomers', [PetugasController::class, 'getCustomers'])->name('getCustomers');
 });
