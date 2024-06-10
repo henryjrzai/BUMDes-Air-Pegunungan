@@ -5,7 +5,9 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\AdministratorSistem;
 use App\Http\Controllers\PelangganController;
+use App\Http\Controllers\PetugasController;
 use App\Http\Controllers\WaterTariffController;
+use App\Http\Middleware\PetugasPencatatan;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,10 +20,20 @@ use App\Http\Controllers\WaterTariffController;
 |
 */
 
+/*
+|--------------------------------------------------------------------------
+| Authenticated Routes
+|--------------------------------------------------------------------------
+*/
 Route::get('login', [AuthController::class, 'index'])->name('login');
 Route::post('authenticate', [AuthController::class, 'authenticate'])->name('authenticate');
 Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 
+/*
+|--------------------------------------------------------------------------
+| Admin Routes
+|--------------------------------------------------------------------------
+*/
 Route::prefix('admin')->middleware(['auth', AdministratorSistem::class])->group(function () {
     Route::get('/', [UserController::class, 'index']);
     Route::get('/users', [UserController::class, 'users'])->name('users');
@@ -45,4 +57,16 @@ Route::prefix('admin')->middleware(['auth', AdministratorSistem::class])->group(
     Route::get('/getTariff/{id}', [WaterTariffController::class, 'show'])->name('getTariff');
     Route::get('/updateTariff/{id}', [WaterTariffController::class, 'update'])->name('updateTariff');
     Route::delete('/tarif/{id}', [WaterTariffController::class, 'destroy'])->name('deleteTariff');
+});
+
+/*
+|--------------------------------------------------------------------------
+| Petugas Pencatatan Routes
+|--------------------------------------------------------------------------
+*/
+Route::prefix('petugas')->middleware(['auth', PetugasPencatatan::class])->group(function () {
+    Route::get('/', [PetugasController::class, 'index'])->name('petugas.index');
+    Route::get('/record-water', [PetugasController::class, 'recordWater'])->name('record-water-usages');
+    Route::post('/record-water', [PetugasController::class, 'store'])->name('record-water');
+    Route::get('/getCustomerByMeterId/{meter_id}', [PetugasController::class, 'getCustomerByMeterId'])->name('getCustomerByMeterId');
 });
