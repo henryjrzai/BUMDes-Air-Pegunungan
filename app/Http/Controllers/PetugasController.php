@@ -132,4 +132,25 @@ class PetugasController extends Controller
         }
         return view('petugas.customers', compact('customers'));
     }
+
+    public function historyWaterUsage() {
+
+        $records = Customer::has('monthlyWaterUsageRecords')
+            ->with(['monthlyWaterUsageRecords' => function ($query) {
+                $query->select('id', 'customer_id', 'usage_value')->latest('created_at');
+            }])->get();
+
+        foreach ($records as $record) {
+            $record->latest_monthly_water_usage_record = $record->monthlyWaterUsageRecords->first();
+            unset($record->monthlyWaterUsageRecords);
+        }
+
+        return view('petugas.history', compact('records'));
+    }
+
+    public function getWaterUsageHistory($record_id) {
+        $record = MonthlyWaterUsageRecord::find($record_id);
+        $record->user->name;
+        return response()->json($record);
+    }
 }

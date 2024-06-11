@@ -42,7 +42,7 @@
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link" href="index.html" aria-expanded="false">
+                    <a class="sidebar-link" href="{{ route('history-water-usage') }}" aria-expanded="false">
                         <span>
                             <i class="fa-solid fa-table"></i>
                         </span>
