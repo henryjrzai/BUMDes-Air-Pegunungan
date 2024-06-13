@@ -6,6 +6,8 @@ use App\Models\Customer;
 use App\Models\MontlyBill;
 use App\Models\WaterTarif;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\DB;
 use App\Models\MonthlyWaterUsageRecord;
 
 class PetugasController extends Controller
@@ -20,7 +22,7 @@ class PetugasController extends Controller
         return view('petugas.record');
     }
 
-    public function getCustomerByMeterId($meter_id) 
+    public function getCustomerByMeterId($meter_id)
     {
         $customer = Customer::where('meter_id', $meter_id)->first();
         if (!$customer) {
@@ -44,12 +46,23 @@ class PetugasController extends Controller
         }
     }
 
+    /**
+     * Stores the water usage record and calculates the billing cost.
+     *
+     * This function validates the request data, calculates the usage value and billing cost based on the water tariff,
+     * stores the image of the meter reading, and saves the record and billing cost in the database.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     *
+     * @throws \Illuminate\Validation\ValidationException If the validation fails.
+     */
     public function store(Request $request)
     {
 
         // Validate the request
         $request->validate([
-            'customer_id' => 'required', 
+            'customer_id' => 'required',
             'initial_use' => 'required',
             'last_use' => 'required',
             'url' => 'required|image|mimes:jpeg,png,jpg|max:2048',
@@ -88,7 +101,7 @@ class PetugasController extends Controller
         }
 
         // Store the image
-        $imageUrl = time().'.'.$request->customer_id.'-'. auth()->user()->id.'.'.$request->url->extension();  
+        $imageUrl = time().'.'.$request->customer_id.'-'. auth()->user()->id.'.'.$request->url->extension();
         $request->url->move(public_path('images/record'), $imageUrl);
 
         // Store the data
@@ -133,6 +146,11 @@ class PetugasController extends Controller
         return view('petugas.customers', compact('customers'));
     }
 
+    /**
+     * Retrieves the history of water usage for customers.
+     *
+     * @return \Illuminate\View\View
+     */
     public function historyWaterUsage() {
 
         $records = Customer::has('monthlyWaterUsageRecords')
@@ -152,5 +170,32 @@ class PetugasController extends Controller
         $record = MonthlyWaterUsageRecord::find($record_id);
         $record->user->name;
         return response()->json($record);
+    }
+
+    /**
+     * Generates a report of customer water usage.
+     *
+     * This function retrieves data from multiple tables including 'customers', 'monthly_water_usage_records',
+     * 'water_tarifs', 'montly_bills', and 'users'. It then selects specific fields from these tables and filters
+     * the records to only include those from the current month. The data is then converted to an array and used to
+     * generate a PDF report which is returned for download.
+     *
+     * @returns {object} A PDF file for download.
+     */
+    public function report()
+    {
+        $data = DB::table('customers')
+        ->leftJoin('monthly_water_usage_records', 'customers.id', '=', 'monthly_water_usage_records.customer_id')
+        ->leftJoin('water_tarifs', 'customers.water_tarif_id', '=', 'water_tarifs.id')
+        ->leftJoin('montly_bills', 'monthly_water_usage_records.id', '=', 'montly_bills.monthly_water_usage_record_id')
+        ->leftJoin('users', 'monthly_water_usage_records.user_id', '=', 'users.id')
+        ->select('customers.meter_id as meter', 'customers.name as name', 'customers.phone as phone', 'customers.dusun as dusun', 'water_tarifs.tariff_name as tariff', 'monthly_water_usage_records.usage_value as usage', 'users.name as petugas')
+        ->whereMonth('monthly_water_usage_records.created_at', date('m'))
+        ->get()
+        ->toArray();
+
+        $pdf = Pdf::loadView('petugas.report', ['data' => $data]);
+        return $pdf->download('report.pdf');
+        // return view('petugas.report', compact('data'));
     }
 }

@@ -22,9 +22,10 @@
 
 @section('content')
     <div class="container-fluid">
-        <div class="card px-3 py-5">
+        <div class="card px-3 py-4">
             <h3 class="text-center mb-4">Penggunaan Air Pelanggan Bulan {{ $monthNow }} </h3>
             <div class="overflow-auto">
+                <button id="report" class="btn btn-success float-end"><i class="fa-solid fa-file-arrow-down me-2"></i>Unduh Laporan</button>
                 <table id="table-history" class="table table-striped table-hover">
                     <thead>
                         <tr>
@@ -72,27 +73,29 @@
                 </div>
                 <div class="modal-body">
                     <img id="record-picture" src="" alt="" class="w-50 h-50">
-					<div class="mt-2">
-						<label for="initial_use" class="form-label">Penggunaan bulan lalu</label>
-						<div class="input-group mb-3">
-							<input type="number" id="initial_use" readonly class="form-control" aria-describedby="initial_use">
-							<span class="input-group-text">M<sup>3</sup></span>
-						</div>
-						<label for="last_use" class="form-label">Penggunaan terakhir saat di rekam</label>
-						<div class="input-group mb-3">
-							<input type="number" id="last_use" readonly class="form-control" aria-describedby="last_use">
-							<span class="input-group-text">M<sup>3</sup></span>
-						</div>
-						<label for="usage_value" class="form-label">Total penggunaan</label>
-						<div class="input-group mb-3">
-							<input type="number" id="usage_value" readonly class="form-control" aria-describedby="usage_value">
-							<span class="input-group-text">M<sup>3</sup></span>
-						</div>
-						<div class="mb-3">
-							<label for="petugas" class="form-label">Petugas perekam</label>
-							<input type="text" class="form-control" readonly id="petugas">
-						</div>
-					</div>
+                    <div class="mt-2">
+                        <label for="initial_use" class="form-label">Penggunaan bulan lalu</label>
+                        <div class="input-group mb-3">
+                            <input type="number" id="initial_use" readonly class="form-control"
+                                aria-describedby="initial_use">
+                            <span class="input-group-text">M<sup>3</sup></span>
+                        </div>
+                        <label for="last_use" class="form-label">Penggunaan terakhir saat di rekam</label>
+                        <div class="input-group mb-3">
+                            <input type="number" id="last_use" readonly class="form-control" aria-describedby="last_use">
+                            <span class="input-group-text">M<sup>3</sup></span>
+                        </div>
+                        <label for="usage_value" class="form-label">Total penggunaan</label>
+                        <div class="input-group mb-3">
+                            <input type="number" id="usage_value" readonly class="form-control"
+                                aria-describedby="usage_value">
+                            <span class="input-group-text">M<sup>3</sup></span>
+                        </div>
+                        <div class="mb-3">
+                            <label for="petugas" class="form-label">Petugas perekam</label>
+                            <input type="text" class="form-control" readonly id="petugas">
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -122,6 +125,10 @@
                     modal.find('#record-picture').attr('src', "../images/record/" + response.url);
                 }
             });
+        });
+
+        $('#report').click(function() {
+            window.location.href = '/petugas/report';
         });
     </script>
 @endpush

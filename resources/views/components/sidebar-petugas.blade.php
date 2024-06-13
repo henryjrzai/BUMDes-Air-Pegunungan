@@ -49,14 +49,6 @@
                         <span class="hide-menu">Riwayat Penggunaan</span>
                     </a>    
                 </li>
-                <li class="sidebar-item">
-                    <a class="sidebar-link" href="index.html" aria-expanded="false">
-                        <span>
-                            <i class="fa-solid fa-book-open"></i>
-                        </span>
-                        <span class="hide-menu">Buat Laporan</span>
-                    </a>
-                </li>
             </ul>
         </nav>
         <!-- End Sidebar navigation -->
