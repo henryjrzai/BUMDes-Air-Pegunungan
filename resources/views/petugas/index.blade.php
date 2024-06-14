@@ -8,109 +8,49 @@
             <div class="col-lg-8 d-flex align-items-strech">
                 <div class="card w-100">
                     <div class="card-body p-4">
-                        <h5 class="card-title fw-semibold mb-4">Pelanggan pemakai air terbanyak</h5>
+                        <h5 class="card-title fw-semibold mb-4">Pelanggan pengguna air terbanyak</h5>
                         <div class="table-responsive">
                             <table class="table text-nowrap mb-0 align-middle">
                                 <thead class="text-dark fs-4">
                                     <tr>
                                         <th class="border-bottom-0">
-                                            <h6 class="fw-semibold mb-0">Id</h6>
+                                            <h6 class="fw-semibold mb-0">No</h6>
                                         </th>
                                         <th class="border-bottom-0">
-                                            <h6 class="fw-semibold mb-0">Assigned</h6>
+                                            <h6 class="fw-semibold mb-0">Nama Pelanggan</h6>
                                         </th>
                                         <th class="border-bottom-0">
-                                            <h6 class="fw-semibold mb-0">Name</h6>
+                                            <h6 class="fw-semibold mb-0">Jenis Pelanggan</h6>
                                         </th>
                                         <th class="border-bottom-0">
-                                            <h6 class="fw-semibold mb-0">Priority</h6>
-                                        </th>
-                                        <th class="border-bottom-0">
-                                            <h6 class="fw-semibold mb-0">Budget</h6>
+                                            <h6 class="fw-semibold mb-0">Jumlah Pemakaian</h6>
                                         </th>
                                     </tr>
                                 </thead>
                                 <tbody>
+                                @forelse($records as $customer)
                                     <tr>
                                         <td class="border-bottom-0">
-                                            <h6 class="fw-semibold mb-0">1</h6>
+                                            <h6 class="fw-semibold mb-0">{{ $loop->iteration }}</h6>
                                         </td>
                                         <td class="border-bottom-0">
-                                            <h6 class="fw-semibold mb-1">Sunil Joshi</h6>
-                                            <span class="fw-normal">Web Designer</span>
+                                            <h6 class="fw-semibold mb-1">{{ $customer->name }}</h6>
+                                            <span class="fw-normal">No. Pel/Meter : {{ $customer->meter }}</span>
                                         </td>
                                         <td class="border-bottom-0">
-                                            <p class="mb-0 fw-normal">Elite Admin</p>
+                                            <p class="mb-0 fw-normal">{{ $customer->tariff }}</p>
                                         </td>
                                         <td class="border-bottom-0">
                                             <div class="d-flex align-items-center gap-2">
-                                                <span class="badge bg-primary rounded-3 fw-semibold">Low</span>
+                                                <p class="mb-0 fw-normal text-center">{{ $customer->usage }} M<sup>3</sup></p>
                                             </div>
                                         </td>
-                                        <td class="border-bottom-0">
-                                            <h6 class="fw-semibold mb-0 fs-4">$3.9</h6>
-                                        </td>
                                     </tr>
+                                @empty
                                     <tr>
-                                        <td class="border-bottom-0">
-                                            <h6 class="fw-semibold mb-0">2</h6>
-                                        </td>
-                                        <td class="border-bottom-0">
-                                            <h6 class="fw-semibold mb-1">Andrew McDownland</h6>
-                                            <span class="fw-normal">Project Manager</span>
-                                        </td>
-                                        <td class="border-bottom-0">
-                                            <p class="mb-0 fw-normal">Real Homes WP Theme</p>
-                                        </td>
-                                        <td class="border-bottom-0">
-                                            <div class="d-flex align-items-center gap-2">
-                                                <span class="badge bg-secondary rounded-3 fw-semibold">Medium</span>
-                                            </div>
-                                        </td>
-                                        <td class="border-bottom-0">
-                                            <h6 class="fw-semibold mb-0 fs-4">$24.5k</h6>
-                                        </td>
+                                        <td colspan="4" class="text-center">Data tidak ditemukan</td>
                                     </tr>
-                                    <tr>
-                                        <td class="border-bottom-0">
-                                            <h6 class="fw-semibold mb-0">3</h6>
-                                        </td>
-                                        <td class="border-bottom-0">
-                                            <h6 class="fw-semibold mb-1">Christopher Jamil</h6>
-                                            <span class="fw-normal">Project Manager</span>
-                                        </td>
-                                        <td class="border-bottom-0">
-                                            <p class="mb-0 fw-normal">MedicalPro WP Theme</p>
-                                        </td>
-                                        <td class="border-bottom-0">
-                                            <div class="d-flex align-items-center gap-2">
-                                                <span class="badge bg-danger rounded-3 fw-semibold">High</span>
-                                            </div>
-                                        </td>
-                                        <td class="border-bottom-0">
-                                            <h6 class="fw-semibold mb-0 fs-4">$12.8k</h6>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="border-bottom-0">
-                                            <h6 class="fw-semibold mb-0">4</h6>
-                                        </td>
-                                        <td class="border-bottom-0">
-                                            <h6 class="fw-semibold mb-1">Nirav Joshi</h6>
-                                            <span class="fw-normal">Frontend Engineer</span>
-                                        </td>
-                                        <td class="border-bottom-0">
-                                            <p class="mb-0 fw-normal">Hosting Press HTML</p>
-                                        </td>
-                                        <td class="border-bottom-0">
-                                            <div class="d-flex align-items-center gap-2">
-                                                <span class="badge bg-success rounded-3 fw-semibold">Critical</span>
-                                            </div>
-                                        </td>
-                                        <td class="border-bottom-0">
-                                            <h6 class="fw-semibold mb-0 fs-4">$2.4k</h6>
-                                        </td>
-                                    </tr>
+                                @endforelse
                                 </tbody>
                             </table>
                         </div>
@@ -123,67 +63,19 @@
                         <!-- Yearly Breakup -->
                         <div class="card overflow-hidden">
                             <div class="card-body p-4">
-                                <h5 class="card-title mb-9 fw-semibold">Total pelanggan direkam</h5>
+                                <h5 class="card-title mb-9 fw-semibold text-center">Total pelanggan saya rekam</h5>
                                 <div class="row align-items-center">
-                                    <div class="col-8">
-                                        <h4 class="fw-semibold mb-3">$36,358</h4>
-                                        <div class="d-flex align-items-center mb-3">
-                                            <span
-                                                class="me-1 rounded-circle bg-light-success round-20 d-flex align-items-center justify-content-center">
-                                                <i class="ti ti-arrow-up-left text-success"></i>
-                                            </span>
-                                            <p class="text-dark me-1 fs-3 mb-0">+9%</p>
-                                            <p class="fs-3 mb-0">last year</p>
-                                        </div>
-                                        <div class="d-flex align-items-center">
-                                            <div class="me-4">
-                                                <span class="round-8 bg-primary rounded-circle me-2 d-inline-block"></span>
-                                                <span class="fs-2">2023</span>
-                                            </div>
-                                            <div>
-                                                <span
-                                                    class="round-8 bg-light-primary rounded-circle me-2 d-inline-block"></span>
-                                                <span class="fs-2">2023</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-4">
+                                    <div class="col-12">
+                                        <h4 class="fw-semibold mb-3 text-center" id="customerRecorded"></h4>
                                         <div class="d-flex justify-content-center">
                                             <div id="breakup"></div>
+                                            <canvas id="myChart"></canvas>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-12">
-                        <!-- Monthly Earnings -->
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="row alig n-items-start">
                                     <div class="col-8">
-                                        <h5 class="card-title mb-9 fw-semibold"> Pendapatan Bulan Ini </h5>
-                                        <h4 class="fw-semibold mb-3">$6,820</h4>
-                                        <div class="d-flex align-items-center pb-1">
-                                            <span
-                                                class="me-2 rounded-circle bg-light-danger round-20 d-flex align-items-center justify-content-center">
-                                                <i class="ti ti-arrow-down-right text-danger"></i>
-                                            </span>
-                                            <p class="text-dark me-1 fs-3 mb-0">+9%</p>
-                                            <p class="fs-3 mb-0">last year</p>
-                                        </div>
-                                    </div>
-                                    <div class="col-4">
-                                        <div class="d-flex justify-content-end">
-                                            <div
-                                                class="text-white bg-secondary rounded-circle p-6 d-flex align-items-center justify-content-center">
-                                                <i class="ti ti-currency-dollar fs-6"></i>
-                                            </div>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <div id="earning"></div>
                         </div>
                     </div>
                 </div>
@@ -193,8 +85,59 @@
 @endsection
 
 @push('scripts')
-    <script src="../assets/libs/jquery/dist/jquery.min.js"></script>
-    <script src="../assets/js/dashboard.js"></script>
-    <script src="../assets/libs/apexcharts/dist/apexcharts.min.js"></script>
-    <script src="../assets/libs/simplebar/dist/simplebar.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+    <script type="text/javascript">
+
+        $(document).ready(function() {
+
+            $.ajax({
+                url: "{{ route('getChartData') }}",
+                method: "GET",
+                success: function(response) {
+                    console.log(response.length)
+                    $('#customerRecorded').text(`${response.length} Pelanggan`);
+                    customerRecordedChart(response);
+                }
+            })
+
+        });
+
+
+        /**
+         * This function generates a doughnut chart using Chart.js library.
+         * The chart represents the count of customers grouped by their tariff.
+         *
+         * @param {Array} data - The array of customer data. Each element is an object with properties: 'usage', 'cost', 'tariff'
+         */
+        function customerRecordedChart(data) {
+            const groupedData = data.reduce((acc, item) => {
+                acc[item.tariff] = (acc[item.tariff] || 0) + 1;
+                return acc;
+            }, {});
+
+            const labels = Object.keys(groupedData);
+            const counts = Object.values(groupedData);
+
+            const ctx = document.getElementById('myChart');
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Pelanggan',
+                        data: counts,
+                        backgroundColor: [
+                            'rgb(255, 99, 132)',
+                            'rgb(54, 162, 235)',
+                            'rgb(255, 205, 86)',
+                            'rgb(75, 69, 75)',
+                            'rgb(86, 362, 192)',
+                            'rgb(96, 53, 365)',
+                        ],
+                        hoverOffset: 4
+                    }]
+                },
+            });
+        }
+    </script>
 @endpush

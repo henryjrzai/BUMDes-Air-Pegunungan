@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Customer;
 use App\Models\MontlyBill;
 use App\Models\WaterTarif;
+use http\Env\Response;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
@@ -12,9 +13,48 @@ use App\Models\MonthlyWaterUsageRecord;
 
 class PetugasController extends Controller
 {
+    /**
+     * Fetches the top 10 customers with the highest water usage and their related water tariff data.
+     *
+     * This function retrieves the top 10 customers who have the highest water usage records.
+     * It does this by joining the 'customers' table with the 'monthly_water_usage_records' and 'water_tarifs' tables.
+     * It then selects specific fields from these tables and orders the records by the 'usage_value' in descending order.
+     * The function limits the results to the top 10 and returns these records.
+     *
+     * @return \Illuminate\View\View The view of 'petugas.index' with the fetched customers.
+     */
     public function index()
     {
-        return view('petugas.index');
+        $records = Customer::join('monthly_water_usage_records', 'customers.id', '=', 'monthly_water_usage_records.customer_id')
+            ->join('water_tarifs', 'customers.water_tarif_id', '=', 'water_tarifs.id')
+            ->select('customers.meter_id as meter', 'customers.name as name', 'customers.phone as phone',
+                'customers.dusun as dusun', 'water_tarifs.tariff_name as tariff', 'monthly_water_usage_records.usage_value as usage')
+            ->orderBy('monthly_water_usage_records.usage_value', 'desc')
+            ->limit(10)
+            ->get();
+        return view('petugas.index', compact('records'));
+    }
+
+    /**
+     * Fetches the chart data for the current month.
+     *
+     * This function retrieves the water usage data for the current month by joining the 'monthly_water_usage_records',
+     * 'montly_bills', 'customers', and 'water_tarifs' tables. It then selects specific fields from these tables and
+     * filters the records to only include those from the current month and for the currently authenticated user.
+     *
+     * @return \Illuminate\Http\JsonResponse The JSON response containing the fetched data.
+     */
+    public function getChartData()
+    {
+        $data = MonthlyWaterUsageRecord::join('montly_bills', 'monthly_water_usage_records.id', '=', 'montly_bills.monthly_water_usage_record_id')
+            ->join('customers', 'monthly_water_usage_records.customer_id', '=', 'customers.id')
+            ->join('water_tarifs', 'customers.water_tarif_id', '=', 'water_tarifs.id')
+            ->select('monthly_water_usage_records.usage_value as usage', 'montly_bills.billing_costs as cost', 'water_tarifs.tariff_name as tariff', 'monthly_water_usage_records.created_at as date')
+            ->whereMonth('monthly_water_usage_records.created_at', date('m'))
+            ->where('monthly_water_usage_records.user_id', '=', auth()->user()->id)
+            ->get();
+
+        return response()->json($data);
     }
 
     public function recordWater()
@@ -59,7 +99,6 @@ class PetugasController extends Controller
      */
     public function store(Request $request)
     {
-
         // Validate the request
         $request->validate([
             'customer_id' => 'required',
@@ -69,6 +108,12 @@ class PetugasController extends Controller
             'user_id' => 'required',
             'water_tariff_id' => 'required',
         ]);
+
+        // cek apa bila bulan ini sudah melakukan perekaman data atau belum jika sudah maka tidak bisa melakukan perekaman data dan memberikan pesan error
+        $check = MonthlyWaterUsageRecord::where('customer_id', $request->customer_id)->whereMonth('created_at', date('m'))->first();
+        if ($check) {
+            return response()->json(['message' => 'Maaf, data bulan ini sudah direkam'], 400);
+        }
 
         if ($request->initial_use == null || $request->initial_use == '' ){
             $request->merge(['initial_use' => 0]);
@@ -185,14 +230,14 @@ class PetugasController extends Controller
     public function report()
     {
         $data = DB::table('customers')
-        ->leftJoin('monthly_water_usage_records', 'customers.id', '=', 'monthly_water_usage_records.customer_id')
-        ->leftJoin('water_tarifs', 'customers.water_tarif_id', '=', 'water_tarifs.id')
-        ->leftJoin('montly_bills', 'monthly_water_usage_records.id', '=', 'montly_bills.monthly_water_usage_record_id')
-        ->leftJoin('users', 'monthly_water_usage_records.user_id', '=', 'users.id')
-        ->select('customers.meter_id as meter', 'customers.name as name', 'customers.phone as phone', 'customers.dusun as dusun', 'water_tarifs.tariff_name as tariff', 'monthly_water_usage_records.usage_value as usage', 'users.name as petugas')
-        ->whereMonth('monthly_water_usage_records.created_at', date('m'))
-        ->get()
-        ->toArray();
+            ->leftJoin('monthly_water_usage_records', 'customers.id', '=', 'monthly_water_usage_records.customer_id')
+            ->leftJoin('water_tarifs', 'customers.water_tarif_id', '=', 'water_tarifs.id')
+            ->leftJoin('montly_bills', 'monthly_water_usage_records.id', '=', 'montly_bills.monthly_water_usage_record_id')
+            ->leftJoin('users', 'monthly_water_usage_records.user_id', '=', 'users.id')
+            ->select('customers.meter_id as meter', 'customers.name as name', 'customers.phone as phone', 'customers.dusun as dusun', 'water_tarifs.tariff_name as tariff', 'monthly_water_usage_records.usage_value as usage', 'users.name as petugas')
+            ->whereMonth('monthly_water_usage_records.created_at', date('m'))
+            ->get()
+            ->toArray();
 
         $pdf = Pdf::loadView('petugas.report', ['data' => $data]);
         return $pdf->download('report.pdf');

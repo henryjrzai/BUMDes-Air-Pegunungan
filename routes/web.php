@@ -66,6 +66,7 @@ Route::prefix('admin')->middleware(['auth', AdministratorSistem::class])->group(
 */
 Route::prefix('petugas')->middleware(['auth', PetugasPencatatan::class])->group(function () {
     Route::get('/', [PetugasController::class, 'index'])->name('petugas.index');
+    Route::get('/getChartData', [PetugasController::class, 'getChartData'])->name('getChartData');
     Route::get('/record-water', [PetugasController::class, 'recordWater'])->name('record-water-usages');
     Route::post('/record-water', [PetugasController::class, 'store'])->name('record-water');
     Route::get('/getCustomerByMeterId/{meter_id}', [PetugasController::class, 'getCustomerByMeterId'])->name('getCustomerByMeterId');
