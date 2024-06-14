@@ -14,4 +14,9 @@ class Customer extends Model
     {
         return $this->belongsTo(WaterTarif::class);
     }
+
+    public function monthlyWaterUsageRecords()
+    {
+        return $this->hasMany(MonthlyWaterUsageRecord::class);
+    }
 }
