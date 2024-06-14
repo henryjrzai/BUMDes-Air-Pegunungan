@@ -3,21 +3,61 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Customer;
+use App\Models\MontlyBill;
 use Illuminate\Http\Request;
 // use DataTables;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Yajra\DataTables\DataTables as DataTables;
 
 class UserController extends Controller
 {
-    public function index() { return view('admin.index'); }
+    public function index()
+    {
+        $records = Customer::join('monthly_water_usage_records', 'customers.id', '=', 'monthly_water_usage_records.customer_id')
+            ->join('water_tarifs', 'customers.water_tarif_id', '=', 'water_tarifs.id')
+            ->select('customers.meter_id as meter', 'customers.name as name', 'customers.phone as phone',
+                'customers.dusun as dusun', 'water_tarifs.tariff_name as tariff', 'monthly_water_usage_records.usage_value as usage')
+            ->orderBy('monthly_water_usage_records.usage_value', 'desc')
+            ->limit(10)
+            ->get();
+        return view('admin.index' , compact('records'));
+    }
+
+     /**
+     * Retrieves the dashboard data, including the count of users by role, the total user count,
+     * and the earning data for each customer.
+     *
+     * @return \Illuminate\Http\JsonResponse The JSON response containing the dashboard data.
+     */
+    public function dashboard() 
+    {
+        $users = DB::table('users')->select('role')->get();
+        $user = $users->count();
+        $earning = MontlyBill::select('customer_id', 'billing_costs', 'created_at')->get();
+        // count totoal billing costs
+        $total = 0;
+        foreach ($earning as $earn) {
+            $total += $earn->billing_costs;
+        }
+        
+        return response()->json([
+            'success' => true,
+            'message' => 'Data Pengguna Berhasil Ditampilkan!',
+            'users' => $users,
+            'user_count' => $user,
+            'total_earning' => $total,
+            'earning' => $earning
+        ]);
+    }
 
     public function users() { return view('admin.users'); }
 
-    public function showUsers() 
-    { 
+    public function showUsers()
+    {
         $users = User::all();
-        return DataTables::of($users)->make(true); 
+        return DataTables::of($users)->make(true);
     }
 
     public function destroy($email)
@@ -29,7 +69,7 @@ class UserController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Data Pengguna Berhasil Dihapus!.',
-        ]); 
+        ]);
     }
 
     public function store(Request $request)

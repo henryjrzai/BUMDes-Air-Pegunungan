@@ -36,6 +36,7 @@ Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 */
 Route::prefix('admin')->middleware(['auth', AdministratorSistem::class])->group(function () {
     Route::get('/', [UserController::class, 'index']);
+    Route::get('/dashboard', [UserController::class, 'dashboard'])->name('dashboard');
     Route::get('/users', [UserController::class, 'users'])->name('users');
     Route::post('/adduser', [UserController::class, 'store'])->name('users.store');
     Route::get('/getAllUsers', [UserController::class, 'showUsers'])->name('getAllUsers');
