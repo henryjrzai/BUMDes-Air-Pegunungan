@@ -3,11 +3,12 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\PublicController;
+use App\Http\Middleware\PetugasPencatatan;
+use App\Http\Controllers\PetugasController;
 use App\Http\Middleware\AdministratorSistem;
 use App\Http\Controllers\PelangganController;
-use App\Http\Controllers\PetugasController;
 use App\Http\Controllers\WaterTariffController;
-use App\Http\Middleware\PetugasPencatatan;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,6 +20,15 @@ use App\Http\Middleware\PetugasPencatatan;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
+/*
+|--------------------------------------------------------------------------
+| Public Routes
+|--------------------------------------------------------------------------
+*/
+Route::get('/', [PublicController::class, 'index'])->name('landing-page');
+Route::get('/bills', [PublicController::class, 'bills'])->name('bills');
+
 
 /*
 |--------------------------------------------------------------------------
