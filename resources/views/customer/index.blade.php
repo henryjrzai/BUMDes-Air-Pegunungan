@@ -4,7 +4,9 @@
 
 @section('content')
     <!-- Hero Section -->
+    
     <section id="hero" class="hero section">
+        
 
         <div class="container">
             <div class="row gy-4">
@@ -22,6 +24,9 @@
                             <button type="submit" class="btn btn-get-started" type="button" id="button-addon2">Cek
                                 Tagihan</button>
                         </div>
+                        @if (session('error'))
+                        <span class="text-danger fst-italic"> {{ session('error') }}</span>
+                        @endif
                     </form>
                 </div>
                 <div class="col-lg-6 order-1 order-lg-2 hero-img" data-aos="zoom-out">

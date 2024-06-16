@@ -16,15 +16,25 @@ class PublicController extends Controller
 
     public function bills(Request $request) 
     {
-        $meter_id = $request->meter_id;
-        $data = Customer::where('meter_id', $meter_id)->first();
-        $data->waterTarif;
-        $data->monthlyWaterUsageRecords;
-        $data->bills;
+        try {
+            $meter_id = $request->meter_id;
+            $data = Customer::where('meter_id', $meter_id)->first();
+            
+            if ($data === null) {
+                return redirect()->back()->with('error', 'Periksa kembali nomor ID Pelanggan/Meter yang anda masukkan!');
+            }
 
-        $historys = Customer::where('meter_id', $meter_id)->first();
-        $historys->monthlyWaterUsageRecords;
-        $count = $historys->monthlyWaterUsageRecords->count();
-        return view('customer.bills', compact('data', 'historys', 'count'));
+            $data->waterTarif;
+            $data->monthlyWaterUsageRecords;
+            $data->bills;
+            
+            $historys = Customer::where('meter_id', $meter_id)->first();
+            $historys->monthlyWaterUsageRecords;
+            $count = $historys->monthlyWaterUsageRecords->count();
+            return view('customer.bills', compact('data', 'historys', 'count'));
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return redirect()->back()->with('error', 'Periksa kembali nomor ID Pelanggan/Meter yang anda masukkan!');
+        }
+        
     }
 }

@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PublicController;
 use App\Http\Middleware\PetugasPencatatan;
@@ -28,7 +29,7 @@ use App\Http\Controllers\WaterTariffController;
 */
 Route::get('/', [PublicController::class, 'index'])->name('landing-page');
 Route::get('/bills', [PublicController::class, 'bills'])->name('bills');
-
+Route::post('/pay', [PaymentController::class, 'pay'])->name('pay');
 
 /*
 |--------------------------------------------------------------------------
