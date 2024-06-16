@@ -107,7 +107,8 @@
                     _token: '{{ csrf_token() }}',
                     _method: "POST",
                     name: $('#name').val(),
-                    cost: $('#cost').val()
+                    cost: $('#cost').val(),
+                    bill: $('#bill_id').val()
                 },
                 success: function(response) {
                     console.log(response);
@@ -124,7 +125,23 @@
             window.snap.pay($token, {
                 onSuccess: function(result) {
                     /* You may add your own implementation here */
-                    alert("payment success!");
+                    let bill_id = $('#bill_id').val();
+                    $.ajax({
+                        url: `/pay-callback/${bill_id}`,
+                        type: 'POST',
+                        data: {
+                            _token: '{{ csrf_token() }}',
+                            _method: "PUT",
+                        },
+                    })
+                    Swal.fire({
+                        title: 'Yaay! 🎉',
+                        text: 'Pembayaran berhasil!',
+                        icon: 'success',
+                        showConfirmButton: false,
+                        timer: 3000
+                    })
+                    // alert("payment success!");
                     console.log(result);
                 },
                 onPending: function(result) {
