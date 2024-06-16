@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class MontlyBill extends Model
 {
     use HasFactory;
+
+    public function customer()
+    {
+        return $this->belongsTo(Customer::class);
+    }
 }

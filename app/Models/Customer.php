@@ -19,4 +19,9 @@ class Customer extends Model
     {
         return $this->hasMany(MonthlyWaterUsageRecord::class);
     }
+
+    public function bills() 
+    {
+        return $this->hasMany(MontlyBill::class);
+    }
 }
