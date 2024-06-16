@@ -20,7 +20,6 @@ return new class extends Migration
             $table->string('dusun');
             $table->string('rt');
             $table->string('rw');
-            $table->foreignId('water_tarif_id')->constrained(table : 'water_tarifs')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });
     }
