@@ -17,39 +17,44 @@
                             <p>harap periksa kembali ID Pelanggan/Meter anda</p>
                         </div>
                     @else
-                        <div class="mb-3">
-                            <label for="meter-id" class="form-label fw-bold">ID Pelanggan/Meter</label>
-                            <input type="text" class="form-control" id="meter-id" readonly name="meter_id"
-                                value="{{ $data->meter_id }}">
-                        </div>
-                        <div class="mb-3">
-                            <label for="name" class="form-label fw-bold">Nama Pelanggan</label>
-                            <input type="text" class="form-control" id="name" readonly name="name"
-                                value="{{ $data->name }}">
-                        </div>
-                        <div class="mb-3">
-                            <label for="category" class="form-label fw-bold">Kategori Pelanggan</label>
-                            <input type="text" class="form-control" id="category" readonly name="category"
-                                value="{{ $data->waterTarif->tariff_name }}">
-                        </div>
-                        <label for="usage_value" class="form-label fw-bold">Penggunaan bulan ini</label>
-                        <div class="input-group mb-3">
-                            <input type="text" class="form-control" id="usage_value" readonly name="usage_value"
-                                value="{{ $data->monthlyWaterUsageRecords->first() ? $data->monthlyWaterUsageRecords->first()->usage_value : 0 }}">
-                            <span class="input-group-text" id="basic-addon2">M<sup>3</sup></span>
-                        </div>
-                        <label for="cost" class="form-label fw-bold">Total tagihan</label>
-                        <div class="input-group mb-3">
-                            <span class="input-group-text" id="basic-addon1">Rp.</span>
-                            <input type="text" class="form-control" id="cost" readonly name="cost"
-                                value="{{ $data->bills->first() ? $data->bills->first()->billing_costs : 0 }}">
-                        </div>
-                        <div class="mb-3">
-                            <input id="bill_id" type="number" name="bill_id"
-                                value="{{ $data->bills->first() ? $data->bills->first()->id : 0 }}" hidden>
-                            <button id="pay" class="btn btn-success float-end"><i
-                                    class="fa-solid fa-hand-holding-dollar me-2"></i>Bayar</button>
-                        </div>
+                        @if ($data->bills->first()->status == 'paid')
+                            <h1 class="text-center">Tagihan Bulan ini sudah dibayarkan 🤝</h1>
+                        @else
+                            <div class="mb-3">
+                                <label for="meter-id" class="form-label fw-bold">ID Pelanggan/Meter</label>
+                                <input type="text" class="form-control" id="meter-id" readonly name="meter_id"
+                                    value="{{ $data->meter_id }}">
+                            </div>
+                            <div class="mb-3">
+                                <label for="name" class="form-label fw-bold">Nama Pelanggan</label>
+                                <input type="text" class="form-control" id="name" readonly name="name"
+                                    value="{{ $data->name }}">
+                            </div>
+                            <div class="mb-3">
+                                <label for="category" class="form-label fw-bold">Kategori Pelanggan</label>
+                                <input type="text" class="form-control" id="category" readonly name="category"
+                                    value="{{ $data->waterTarif->tariff_name }}">
+                            </div>
+                            <label for="usage_value" class="form-label fw-bold">Penggunaan bulan ini</label>
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control" id="usage_value" readonly name="usage_value"
+                                    value="{{ $data->monthlyWaterUsageRecords->first() ? $data->monthlyWaterUsageRecords->first()->usage_value : 0 }}">
+                                <span class="input-group-text" id="basic-addon2">M<sup>3</sup></span>
+                            </div>
+                            <label for="cost" class="form-label fw-bold">Total tagihan</label>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text" id="basic-addon1">Rp.</span>
+                                <input type="text" class="form-control" id="cost" readonly name="cost"
+                                    value="{{ $data->bills->first() ? $data->bills->first()->billing_costs : 0 }}">
+                            </div>
+                            <div class="mb-3">
+                                <input id="bill_id" type="number" name="bill_id"
+                                    value="{{ $data->bills->first() ? $data->bills->first()->id : 0 }}" hidden>
+                                <button id="pay" class="btn btn-success float-end"><i
+                                        class="fa-solid fa-hand-holding-dollar me-2"></i>Bayar</button>
+                            </div>
+                        @endif
+
                     @endif
                 </div>
             </div>
@@ -58,7 +63,7 @@
 
     <section id="history-usage" class="container">
         <h2 class="text-center fw-bold mb-3">Riwayat Penggunaan</h2>
-        <table class="table table-hover">
+        <table class="table table-hover overflow-auto">
             <thead>
                 <tr>
                     <th>No</th>

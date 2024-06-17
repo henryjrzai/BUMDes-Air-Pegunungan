@@ -4,9 +4,9 @@
 
 @section('content')
     <!-- Hero Section -->
-    
+
     <section id="hero" class="hero section">
-        
+
 
         <div class="container">
             <div class="row gy-4">
@@ -25,7 +25,7 @@
                                 Tagihan</button>
                         </div>
                         @if (session('error'))
-                        <span class="text-danger fst-italic"> {{ session('error') }}</span>
+                            <span class="text-danger fst-italic"> {{ session('error') }}</span>
                         @endif
                     </form>
                 </div>
@@ -93,32 +93,34 @@
         </div><!-- End Section Title -->
 
         <div class="container">
-            <table id="table-tariff" class="table table-striped table-hover">
-                <thead>
-                    <tr>
-                        <th>No</th>
-                        <th>Kelompok Pelanggan</th>
-                        <th>Kategory</th>
-                        <th>0 - 3 M<sup>3</sup></th>
-                        <th>> 3 - 10 M<sup>3</sup></th>
-                        <th>>10 - 20 M<sup>3</sup></th>
-                        <th>>20 M<sup>3</sup></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($tariffs as $tariff)
+            <div class="overflow-auto">
+                <table id="table-tariff" class="table table-striped table-hover">
+                    <thead>
                         <tr>
-                            <td>{{ $loop->iteration }}</td>
-                            <td>{{ $tariff->tariff_name }}</td>
-                            <td>{{ $tariff->tariff_category }}</td>
-                            <td>{{ $tariff->t0_3_M3 }}</td>
-                            <td>{{ $tariff->t__3_10_M3 }}</td>
-                            <td>{{ $tariff->t__10_20_M3 }}</td>
-                            <td>{{ $tariff->t__20_M3 }}</td>
+                            <th>No</th>
+                            <th>Kelompok Pelanggan</th>
+                            <th>Kategory</th>
+                            <th>0 - 3 M<sup>3</sup></th>
+                            <th>> 3 - 10 M<sup>3</sup></th>
+                            <th>>10 - 20 M<sup>3</sup></th>
+                            <th>>20 M<sup>3</sup></th>
                         </tr>
-                    @endforeach
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        @foreach ($tariffs as $tariff)
+                            <tr>
+                                <td>{{ $loop->iteration }}</td>
+                                <td>{{ $tariff->tariff_name }}</td>
+                                <td>{{ $tariff->tariff_category }}</td>
+                                <td>{{ $tariff->t0_3_M3 }}</td>
+                                <td>{{ $tariff->t__3_10_M3 }}</td>
+                                <td>{{ $tariff->t__10_20_M3 }}</td>
+                                <td>{{ $tariff->t__20_M3 }}</td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
         </div>
 
     </section><!-- /Pricing Section -->
