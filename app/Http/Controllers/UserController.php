@@ -56,12 +56,19 @@ class UserController extends Controller
         $monthly_income = $monthly_income->map(function($month) {
             return $month->sum('billing_costs');
         });
+
+        $customers = Customer::join('water_tarifs', 'customers.water_tarif_id', '=', 'water_tarifs.id')
+            ->select('water_tarifs.tariff_name')
+            ->get();
+        $customer_count = $customers->count();
         
         return response()->json([
             'success' => true,
             'message' => 'Data Pengguna Berhasil Ditampilkan!',
             'users' => $users,
             'user_count' => $user,
+            'customer_count' => $customer_count,
+            'customer_role' => $customers,
             'total_earning' => $total,
             'earning' => $earning,
             'monthly_income' => $monthly_income,
