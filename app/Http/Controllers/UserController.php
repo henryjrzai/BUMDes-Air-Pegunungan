@@ -22,7 +22,13 @@ class UserController extends Controller
             ->orderBy('monthly_water_usage_records.usage_value', 'desc')
             ->limit(10)
             ->get();
-        return view('admin.index' , compact('records'));
+
+        $last_transactions = MontlyBill::join('customers', 'montly_bills.customer_id', '=', 'customers.id')
+            ->select('customers.name as name', 'montly_bills.billing_costs as cost', 'montly_bills.created_at as date')
+            ->orderBy('montly_bills.created_at', 'desc')
+            ->limit(10)
+            ->get();
+        return view('admin.index' , compact('records', 'last_transactions'));
     }
 
      /**
@@ -41,14 +47,33 @@ class UserController extends Controller
         foreach ($earning as $earn) {
             $total += $earn->billing_costs;
         }
+
+        $monthly_income = MontlyBill::select('created_at', 'billing_costs')
+            ->whereMonth('created_at', date('m'))
+            ->get();
+        $monthly_income = $monthly_income->groupBy(function($date) {
+            \Carbon\Carbon::setLocale('id');
+            return \Carbon\Carbon::parse($date->created_at)->translatedFormat('F');
+        });
+        $monthly_income = $monthly_income->map(function($month) {
+            return $month->sum('billing_costs');
+        });
+
+        $customers = Customer::join('water_tarifs', 'customers.water_tarif_id', '=', 'water_tarifs.id')
+            ->select('water_tarifs.tariff_name')
+            ->get();
+        $customer_count = $customers->count();
         
         return response()->json([
             'success' => true,
             'message' => 'Data Pengguna Berhasil Ditampilkan!',
             'users' => $users,
             'user_count' => $user,
+            'customer_count' => $customer_count,
+            'customer_role' => $customers,
             'total_earning' => $total,
-            'earning' => $earning
+            'earning' => $earning,
+            'monthly_income' => $monthly_income,
         ]);
     }
 

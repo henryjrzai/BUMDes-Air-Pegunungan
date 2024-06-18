@@ -10,15 +10,7 @@
                     <div class="card-body">
                         <div class="d-sm-flex d-block align-items-center justify-content-between mb-9">
                             <div class="mb-3 mb-sm-0">
-                                <h5 class="card-title fw-semibold">Sales Overview</h5>
-                            </div>
-                            <div>
-                                <select class="form-select">
-                                    <option value="1">March 2023</option>
-                                    <option value="2">April 2023</option>
-                                    <option value="3">May 2023</option>
-                                    <option value="4">June 2023</option>
-                                </select>
+                                <h5 class="card-title fw-semibold">Pendapatan Tahun I</h5>
                             </div>
                         </div>
                         <div id="chart"></div>
@@ -78,61 +70,21 @@
                             <h5 class="card-title fw-semibold">Transaksi Terakhir</h5>
                         </div>
                         <ul class="timeline-widget mb-0 position-relative mb-n5">
-                            <li class="timeline-item d-flex position-relative overflow-hidden">
-                                <div class="timeline-time text-dark flex-shrink-0 text-end">09:30</div>
-                                <div class="timeline-badge-wrap d-flex flex-column align-items-center">
-                                    <span class="timeline-badge border-2 border border-primary flex-shrink-0 my-8"></span>
-                                    <span class="timeline-badge-border d-block flex-shrink-0"></span>
-                                </div>
-                                <div class="timeline-desc fs-3 text-dark mt-n1">Payment received from John Doe
-                                    of $385.90</div>
-                            </li>
-                            <li class="timeline-item d-flex position-relative overflow-hidden">
-                                <div class="timeline-time text-dark flex-shrink-0 text-end">10:00 am</div>
-                                <div class="timeline-badge-wrap d-flex flex-column align-items-center">
-                                    <span class="timeline-badge border-2 border border-info flex-shrink-0 my-8"></span>
-                                    <span class="timeline-badge-border d-block flex-shrink-0"></span>
-                                </div>
-                                <div class="timeline-desc fs-3 text-dark mt-n1 fw-semibold">New sale recorded
-                                    <a href="javascript:void(0)" class="text-primary d-block fw-normal">#ML-3467</a>
-                                </div>
-                            </li>
-                            <li class="timeline-item d-flex position-relative overflow-hidden">
-                                <div class="timeline-time text-dark flex-shrink-0 text-end">12:00 am</div>
-                                <div class="timeline-badge-wrap d-flex flex-column align-items-center">
-                                    <span class="timeline-badge border-2 border border-success flex-shrink-0 my-8"></span>
-                                    <span class="timeline-badge-border d-block flex-shrink-0"></span>
-                                </div>
-                                <div class="timeline-desc fs-3 text-dark mt-n1">Payment was made of $64.95 to
-                                    Michael</div>
-                            </li>
-                            <li class="timeline-item d-flex position-relative overflow-hidden">
-                                <div class="timeline-time text-dark flex-shrink-0 text-end">09:30 am</div>
-                                <div class="timeline-badge-wrap d-flex flex-column align-items-center">
-                                    <span class="timeline-badge border-2 border border-warning flex-shrink-0 my-8"></span>
-                                    <span class="timeline-badge-border d-block flex-shrink-0"></span>
-                                </div>
-                                <div class="timeline-desc fs-3 text-dark mt-n1 fw-semibold">New sale recorded
-                                    <a href="javascript:void(0)" class="text-primary d-block fw-normal">#ML-3467</a>
-                                </div>
-                            </li>
-                            <li class="timeline-item d-flex position-relative overflow-hidden">
-                                <div class="timeline-time text-dark flex-shrink-0 text-end">09:30 am</div>
-                                <div class="timeline-badge-wrap d-flex flex-column align-items-center">
-                                    <span class="timeline-badge border-2 border border-danger flex-shrink-0 my-8"></span>
-                                    <span class="timeline-badge-border d-block flex-shrink-0"></span>
-                                </div>
-                                <div class="timeline-desc fs-3 text-dark mt-n1 fw-semibold">New arrival
-                                    recorded
-                                </div>
-                            </li>
-                            <li class="timeline-item d-flex position-relative overflow-hidden">
-                                <div class="timeline-time text-dark flex-shrink-0 text-end">12:00 am</div>
-                                <div class="timeline-badge-wrap d-flex flex-column align-items-center">
-                                    <span class="timeline-badge border-2 border border-success flex-shrink-0 my-8"></span>
-                                </div>
-                                <div class="timeline-desc fs-3 text-dark mt-n1">Payment Done</div>
-                            </li>
+                            @foreach ($last_transactions as $transaction)
+                                <li class="timeline-item d-flex position-relative overflow-hidden">
+                                    <div class="timeline-time text-dark flex-shrink-0 text-end">
+                                        {{ \Carbon\Carbon::parse($transaction->date)->format('H:i') }}</div>
+                                    <div class="timeline-badge-wrap d-flex flex-column align-items-center">
+                                        <span
+                                            class="timeline-badge border-2 border border-success flex-shrink-0 my-8"></span>
+                                        <span class="timeline-badge-border d-block flex-shrink-0"></span>
+                                    </div>
+                                    <div class="timeline-desc fs-3 text-dark mt-n1">Pembayaran diterima dari
+                                        <b>{{ $transaction->name }}</b>
+                                        sejumlah {{ "Rp " . number_format($transaction->cost, 0, ',', '.') }}
+                                    </div>
+                                </li>
+                            @endforeach
                         </ul>
                     </div>
                 </div>
@@ -144,45 +96,46 @@
                         <div class="table-responsive">
                             <table class="table text-nowrap mb-0 align-middle">
                                 <thead class="text-dark fs-4">
-                                <tr>
-                                    <th class="border-bottom-0">
-                                        <h6 class="fw-semibold mb-0">No</h6>
-                                    </th>
-                                    <th class="border-bottom-0">
-                                        <h6 class="fw-semibold mb-0">Nama Pelanggan</h6>
-                                    </th>
-                                    <th class="border-bottom-0">
-                                        <h6 class="fw-semibold mb-0">Jenis Pelanggan</h6>
-                                    </th>
-                                    <th class="border-bottom-0">
-                                        <h6 class="fw-semibold mb-0">Jumlah Pemakaian</h6>
-                                    </th>
-                                </tr>
+                                    <tr>
+                                        <th class="border-bottom-0">
+                                            <h6 class="fw-semibold mb-0">No</h6>
+                                        </th>
+                                        <th class="border-bottom-0">
+                                            <h6 class="fw-semibold mb-0">Nama Pelanggan</h6>
+                                        </th>
+                                        <th class="border-bottom-0">
+                                            <h6 class="fw-semibold mb-0">Jenis Pelanggan</h6>
+                                        </th>
+                                        <th class="border-bottom-0">
+                                            <h6 class="fw-semibold mb-0">Jumlah Pemakaian</h6>
+                                        </th>
+                                    </tr>
                                 </thead>
                                 <tbody>
-                                @forelse($records as $customer)
-                                    <tr>
-                                        <td class="border-bottom-0">
-                                            <h6 class="fw-semibold mb-0">{{ $loop->iteration }}</h6>
-                                        </td>
-                                        <td class="border-bottom-0">
-                                            <h6 class="fw-semibold mb-1">{{ $customer->name }}</h6>
-                                            <span class="fw-normal">No. Pel/Meter : {{ $customer->meter }}</span>
-                                        </td>
-                                        <td class="border-bottom-0">
-                                            <p class="mb-0 fw-normal">{{ $customer->tariff }}</p>
-                                        </td>
-                                        <td class="border-bottom-0">
-                                            <div class="d-flex align-items-center gap-2">
-                                                <p class="mb-0 fw-normal text-center">{{ $customer->usage }} M<sup>3</sup></p>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                @empty
-                                    <tr>
-                                        <td colspan="4" class="text-center">Data tidak ditemukan</td>
-                                    </tr>
-                                @endforelse
+                                    @forelse($records as $customer)
+                                        <tr>
+                                            <td class="border-bottom-0">
+                                                <h6 class="fw-semibold mb-0">{{ $loop->iteration }}</h6>
+                                            </td>
+                                            <td class="border-bottom-0">
+                                                <h6 class="fw-semibold mb-1">{{ $customer->name }}</h6>
+                                                <span class="fw-normal">No. Pel/Meter : {{ $customer->meter }}</span>
+                                            </td>
+                                            <td class="border-bottom-0">
+                                                <p class="mb-0 fw-normal">{{ $customer->tariff }}</p>
+                                            </td>
+                                            <td class="border-bottom-0">
+                                                <div class="d-flex align-items-center gap-2">
+                                                    <p class="mb-0 fw-normal text-center">{{ $customer->usage }}
+                                                        M<sup>3</sup></p>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @empty
+                                        <tr>
+                                            <td colspan="4" class="text-center">Data tidak ditemukan</td>
+                                        </tr>
+                                    @endforelse
                                 </tbody>
                             </table>
                         </div>

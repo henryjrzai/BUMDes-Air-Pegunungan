@@ -33,6 +33,9 @@
 
     <!-- Main CSS File -->
     <link href="{{ asset('../assets/css/main.css') }}" rel="stylesheet">
+
+    {{-- SweetAler --}}
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body class="index-page">

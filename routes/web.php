@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ManajementController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PublicController;
@@ -10,6 +11,7 @@ use App\Http\Controllers\PetugasController;
 use App\Http\Middleware\AdministratorSistem;
 use App\Http\Controllers\PelangganController;
 use App\Http\Controllers\WaterTariffController;
+use App\Http\Middleware\Manajement;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,6 +32,7 @@ use App\Http\Controllers\WaterTariffController;
 Route::get('/', [PublicController::class, 'index'])->name('landing-page');
 Route::get('/bills', [PublicController::class, 'bills'])->name('bills');
 Route::post('/pay', [PaymentController::class, 'pay'])->name('pay');
+Route::put('/pay-callback/{bill_id}', [PaymentController::class, 'payCallback'])->name('pay-callback');
 
 /*
 |--------------------------------------------------------------------------
@@ -86,4 +89,25 @@ Route::prefix('petugas')->middleware(['auth', PetugasPencatatan::class])->group(
     Route::get('/history-water-usage', [PetugasController::class, 'historyWaterUsage'])->name('history-water-usage');
     Route::get('/getWaterUsageHistory/{record_id}', [PetugasController::class, 'getWaterUsageHistory'])->name('getWaterUsageHistory');
     Route::get('/report', [PetugasController::class, 'report'])->name('report');
+});
+
+
+/*
+|--------------------------------------------------------------------------
+| Manajement Route
+|--------------------------------------------------------------------------
+*/
+Route::prefix('manajement')->middleware(['auth', Manajement::class])->group(function () {
+    Route::get('/', [ManajementController::class, 'index'])->name('manajement.index');
+    Route::get('/dashboard', [UserController::class, 'dashboard'])->name('dashboard');
+    Route::get('/customers', [ManajementController::class, 'customers'])->name('manajement.customers');
+    Route::get('/bills', [ManajementController::class, 'bills'])->name('manajement.bills');
+
+    /*
+    |--------------------------------------------------------------------------
+    | GENERATE REPORT
+    |--------------------------------------------------------------------------
+    */
+    Route::get('/customer-report', [ManajementController::class, 'customerReport'])->name('customer-report');
+    Route::get('/bill-report', [ManajementController::class, 'billReport'])->name('bill-report');
 });

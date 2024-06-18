@@ -3,7 +3,7 @@
     <!-- Sidebar scroll-->
     <div>
         <div class="brand-logo d-flex align-items-center justify-content-between">
-            <a href="{{ url('/petugas') }}" class="text-nowrap logo-img">
+            <a href="{{ url('/manajement') }}" class="text-nowrap logo-img">
                 <img src="../assets/images/logos/BUMDes Air Pegunungan.png" width="180" alt="" />
             </a>
             <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">
@@ -14,7 +14,7 @@
         <nav class="sidebar-nav scroll-sidebar" data-simplebar="">
             <ul id="sidebarnav">
                 <li class="sidebar-item">
-                    <a class="sidebar-link" href="{{ url('/petugas') }}" aria-expanded="false">
+                    <a class="sidebar-link" href="{{ url('/manajement') }}" aria-expanded="false">
                         <span>
                             <i class="ti ti-layout-dashboard"></i>
                         </span>
@@ -26,28 +26,20 @@
                     <span class="hide-menu">MASTER DATA</span>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link" href="{{ route('record-water-usages') }}" aria-expanded="false">
+                    <a class="sidebar-link" href="{{ route('manajement.customers') }}" aria-expanded="false">
                         <span>
-                            <i class="fa-solid fa-book"></i>
-                        </span>
-                        <span class="hide-menu">Catat Penggunaan Air</span>
-                    </a>
-                </li>
-                <li class="sidebar-item">
-                    <a class="sidebar-link" href="{{ route('getCustomers') }}" aria-expanded="false">
-                        <span>
-                            <i class="fa-solid fa-users"></i>
+                            <i class="ti ti-article"></i>
                         </span>
                         <span class="hide-menu">Pelanggan</span>
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a class="sidebar-link" href="{{ route('history-water-usage') }}" aria-expanded="false">
+                    <a class="sidebar-link" href="{{ Route('manajement.bills') }}" aria-expanded="false">
                         <span>
-                            <i class="fa-solid fa-table"></i>
+                            <i class="ti ti-alert-circle"></i>
                         </span>
-                        <span class="hide-menu">Riwayat Penggunaan</span>
-                    </a>    
+                        <span class="hide-menu">Tagihan Pelanggan</span>
+                    </a>
                 </li>
             </ul>
         </nav>
