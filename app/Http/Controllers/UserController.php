@@ -22,7 +22,13 @@ class UserController extends Controller
             ->orderBy('monthly_water_usage_records.usage_value', 'desc')
             ->limit(10)
             ->get();
-        return view('admin.index' , compact('records'));
+
+        $last_transactions = MontlyBill::join('customers', 'montly_bills.customer_id', '=', 'customers.id')
+            ->select('customers.name as name', 'montly_bills.billing_costs as cost', 'montly_bills.created_at as date')
+            ->orderBy('montly_bills.created_at', 'desc')
+            ->limit(10)
+            ->get();
+        return view('admin.index' , compact('records', 'last_transactions'));
     }
 
      /**
@@ -41,6 +47,15 @@ class UserController extends Controller
         foreach ($earning as $earn) {
             $total += $earn->billing_costs;
         }
+
+        $monthly_income = MontlyBill::select('created_at', 'billing_costs')->get();
+        $monthly_income = $monthly_income->groupBy(function($date) {
+            \Carbon\Carbon::setLocale('id');
+            return \Carbon\Carbon::parse($date->created_at)->translatedFormat('F');
+        });
+        $monthly_income = $monthly_income->map(function($month) {
+            return $month->sum('billing_costs');
+        });
         
         return response()->json([
             'success' => true,
@@ -48,7 +63,8 @@ class UserController extends Controller
             'users' => $users,
             'user_count' => $user,
             'total_earning' => $total,
-            'earning' => $earning
+            'earning' => $earning,
+            'monthly_income' => $monthly_income,
         ]);
     }
 
