@@ -16,6 +16,8 @@
                             <h4 class="alert-heading">Data tidak ditemukan</h4>
                             <p>harap periksa kembali ID Pelanggan/Meter anda</p>
                         </div>
+                    @elseif ($data->monthlyWaterUsageRecords->count() == 0)
+                        <h2 class="text-center">Tagihan Bulan ini belum dibuat</h2>
                     @else
                         @if ($data->bills->first()->status == 'paid')
                             <h1 class="text-center">Tagihan Bulan ini sudah dibayarkan 🤝</h1>
