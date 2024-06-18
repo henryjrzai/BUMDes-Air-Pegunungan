@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Modernize Free</title>
-    <link rel="shortcut icon" type="image/png" href="../assets/images/logos/favicon.png" />
+    <link rel="shortcut icon" type="image/png" href="../assets/favicon/favicon.ico" />
     <link rel="stylesheet" href="../assets/css/styles.min.css" />
 </head>
 
@@ -21,9 +21,9 @@
                         <div class="card mb-0">
                             <div class="card-body">
                                 <a class="text-nowrap logo-img text-center d-block py-3 w-100">
-                                    <img src="../assets/images/logos/dark-logo.svg" width="180" alt="">
+                                    <img src="../assets/images/logos/BUMDes Air Pegunungan.png" width="180" alt="">
                                 </a>
-                                <p class="text-center">Your Social Campaigns</p>
+                                <p class="text-center">Sumber Kehidupan dan Pemberdayaan Desa</p>
                                 @if (session()->has('error'))
                                     <div class="alert alert-warning" role="alert">
                                         <strong>{{ session()->get('error') }}</strong>
