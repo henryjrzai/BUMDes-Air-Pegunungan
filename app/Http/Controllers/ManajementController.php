@@ -24,6 +24,7 @@ class ManajementController extends Controller
         $last_transactions = MontlyBill::join('customers', 'montly_bills.customer_id', '=', 'customers.id')
             ->select('customers.name as name', 'montly_bills.billing_costs as cost', 'montly_bills.created_at as date')
             ->orderBy('montly_bills.created_at', 'desc')
+            ->where('montly_bills.status', 'paid')
             ->limit(10)
             ->get();
         return view('manajement.index', compact('records', 'last_transactions'));

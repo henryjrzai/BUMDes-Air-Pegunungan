@@ -10,6 +10,7 @@ $(function () {
             monthlyIncome(data.monthly_income);
             customerCount(data.customer_role);
             earning(data.earning);
+            console.log(data);
         }
     });
 

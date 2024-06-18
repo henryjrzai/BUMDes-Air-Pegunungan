@@ -48,7 +48,9 @@ class UserController extends Controller
             $total += $earn->billing_costs;
         }
 
-        $monthly_income = MontlyBill::select('created_at', 'billing_costs')->get();
+        $monthly_income = MontlyBill::select('created_at', 'billing_costs')
+            ->whereMonth('created_at', date('m'))
+            ->get();
         $monthly_income = $monthly_income->groupBy(function($date) {
             \Carbon\Carbon::setLocale('id');
             return \Carbon\Carbon::parse($date->created_at)->translatedFormat('F');
