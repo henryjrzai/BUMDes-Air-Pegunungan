@@ -132,15 +132,15 @@
             window.snap.pay($token, {
                 onSuccess: function(result) {
                     /* You may add your own implementation here */
-                    // let bill_id = $('#bill_id').val();
-                    // $.ajax({
-                    //     url: `/pay-callback/${bill_id}`,
-                    //     type: 'POST',
-                    //     data: {
-                    //         _token: '{{ csrf_token() }}',
-                    //         _method: "PUT",
-                    //     },
-                    // })
+                    let bill_id = $('#bill_id').val();
+                    $.ajax({
+                        url: `/pay-callback/${bill_id}`,
+                        type: 'POST',
+                        data: {
+                            _token: '{{ csrf_token() }}',
+                            _method: "PUT",
+                        },
+                    })
                     Swal.fire({
                         title: 'Yaay! 🎉',
                         text: 'Pembayaran berhasil!',
