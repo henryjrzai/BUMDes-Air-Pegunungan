@@ -33,7 +33,7 @@ Route::get('/', [PublicController::class, 'index'])->name('landing-page');
 Route::get('/bills', [PublicController::class, 'bills'])->name('bills');
 Route::post('/pay', [PaymentController::class, 'pay'])->name('pay');
 Route::put('/pay-callback/{bill_id}', [PaymentController::class, 'payCallback'])->name('pay-callback');
-Route::post('/midtrans-callback', [PaymentController::class, 'midtransCallback'])->name('midtrans-callback');
+
 
 /*
 |--------------------------------------------------------------------------
