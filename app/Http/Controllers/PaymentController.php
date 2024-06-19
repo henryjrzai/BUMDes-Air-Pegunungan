@@ -35,17 +35,17 @@ class PaymentController extends Controller
         return response()->json(['snap_token' => $snapToken]);
     }
 
-    // public function midtransCallback(Request $request) 
-    // {
-    //     $serverKey = config('midtrans.server_key');
-    //     $hashed = hash('sha512', $request->order_id.$request->status_code.$request->gross_amount.$serverKey);
-    //     if ($hashed == $request->signature_key) {
-    //         if($request->transaction_status == 'capture') {
-    //             $bill = MontlyBill::find($request->order_id);
-    //             $bill->status = 'paid';
-    //         }
-    //     }
-    // }
+    public function midtransCallback(Request $request) 
+    {
+        $serverKey = config('midtrans.server_key');
+        $hashed = hash('sha512', $request->order_id.$request->status_code.$request->gross_amount.$serverKey);
+        if ($hashed == $request->signature_key) {
+            if($request->transaction_status == 'capture') {
+                $bill = MontlyBill::find($request->order_id);
+                $bill->status = 'paid';
+            }
+        }
+    }
 
     public function payCallback($bill_id)
     {
