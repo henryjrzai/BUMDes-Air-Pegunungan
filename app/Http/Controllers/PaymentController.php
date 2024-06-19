@@ -43,6 +43,7 @@ class PaymentController extends Controller
             if($request->transaction_status == 'capture') {
                 $bill = MontlyBill::find($request->order_id);
                 $bill->status = 'paid';
+                $bill->save();
             }
         }
     }
